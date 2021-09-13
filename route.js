@@ -31,9 +31,27 @@ myRoutes.route('/second').post(function(req, res){
     const myDB = {}
 
     if (myDB.Data.poolID === req.body.poolID){
+        const asc = (arr) => arr.sort((a, b) => a - b);
+
+        const quantile = (arr, q) => {
+            
+            const q = (q > 1) ? q / 100 : q //percentile to quantile
+            
+            const sorted = asc(arr);
+            const pos = (sorted.length - 1) * q;
+            const base = Math.floor(pos);
+            const rest = pos - base;
+
+            if (sorted[base + 1] !== undefined) {
+                return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+            } else {
+                return sorted[base];
+            }
+        };
+
         const message = {
-            'quantile' : req.body.percentile / 100,
-            'total_count': _.keys(myDB.Data).length 
+            'quantile' : quantile(myDB.Data.poolValues, req.body.percentile),
+            'total_items': _.keys(myDB.Data.poolValues).length 
         }
         res.json(message)
     }
