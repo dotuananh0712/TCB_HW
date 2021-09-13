@@ -28,14 +28,15 @@ myRoutes.route('/first').post(function (req, res) {
 
 // Defined second route
 myRoutes.route('/second').post(function(req, res){
+    // Example empty pool
     const myDB = {}
 
     if (myDB.Data.poolID === req.body.poolID){
         const asc = (arr) => arr.sort((a, b) => a - b);
 
-        const quantile = (arr, q) => {
+        const quantile = (arr, p) => {
             
-            const q = (q > 1) ? q / 100 : q //percentile to quantile
+            const q = (p > 1) ? p / 100 : p //percentile to quantile
             
             const sorted = asc(arr);
             const pos = (sorted.length - 1) * q;
