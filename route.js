@@ -5,10 +5,10 @@ const myRoutes = express.Router();
 myRoutes.route('/first').post(function (req, res) {
     // Example empty pool
     const myDB = { 'poolID': 123456, "poolValues": [1, 2, 3, 4, 5, 6] }
+    const myPool = [myDB]
 
-    if (!(req.body.poolID in myDB.poolId)) {
-        
-        myDB.push(req.body)
+    if (!(req.body.poolID === myDB.poolID)) {
+        myPool.push(req.body)
             .then(() => {
                 res.json('Pool ' + req.body.poolID + 'Inserted!')
             })
@@ -32,7 +32,7 @@ myRoutes.route('/first').post(function (req, res) {
 myRoutes.route('/second').post(function (req, res) {
     // Example empty pool
     const myDB = { 'poolID': 123456, "poolValues": [1, 2, 3, 4, 5, 6] }
-
+    
     if (myDB.poolID === req.body.poolID) {
         const asc = (arr) => arr.sort((a, b) => a - b);
 
@@ -54,7 +54,7 @@ myRoutes.route('/second').post(function (req, res) {
 
         const message = {
             'quantile': quantile(myDB.poolValues, req.body.percentile),
-            'total_items': _.keys(myDB.poolValues).length
+            'total_items': myDB.poolValues.length
         }
         res.json(message)
     }

@@ -17,14 +17,14 @@ app.use(bodyParser.json());
 app.post("/first", myRoutes);
 app.post("/second", myRoutes);
 
-app.use(
-rateLimit({
-    windowMs: 60 * 60 * 1000, // 1 hour duration in milliseconds
-    max: 200,
-    message: "Slow Down !",
-    headers: true,
-})
-);
+// app.use(
+// rateLimit({
+//     windowMs: 60 * 60 * 1000, // 1 hour duration in milliseconds
+//     max: 200,
+//     message: "Slow Down !",
+//     headers: true,
+// })
+// );
 
 app.listen(PORT, () => {
     console.log('Your REST API with two POST endpoints is running on port ' + PORT)
