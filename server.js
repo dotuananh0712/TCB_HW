@@ -14,8 +14,8 @@ const myRoutes = require("./route");
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/first", myRoutes);
-app.use("/second", myRoutes);
+app.post("/first", myRoutes);
+app.post("/second", myRoutes);
 
 app.use(
 rateLimit({

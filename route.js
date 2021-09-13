@@ -4,40 +4,42 @@ const myRoutes = express.Router();
 // Defined first route
 myRoutes.route('/first').post(function (req, res) {
     // Example empty pool
-    const myDB = {}
+    const myDB = { 'poolID': 123456, "poolValues": [1, 2, 3, 4, 5, 6] }
 
-    if (!(poolID in myDB.Data.id)){
+    if (!(req.body.poolID in myDB.poolId)) {
+        
         myDB.push(req.body)
-        .then(() => {
-            res.json('Pool ' + req.body.poolID + 'Inserted!')
-        })
-        .catch(err => {
-            res.status(400).send("Unable to Insert Pool " + req.body.poolID)
-        })}
+            .then(() => {
+                res.json('Pool ' + req.body.poolID + 'Inserted!')
+            })
+            .catch(err => {
+                res.status(400).send("Unable to Insert Pool " + req.body.poolID)
+            })
+    }
 
-    else if (myDB.Data.id  === poolID) {
+    else if (myDB.poolId === req.body.poolID) {
         myDB.poolValues.push(req.body.poolValues)
-        .then(() => {
-            res.json('Pool ' + myDB.Data.id + " Appended!");
-        })
-        .catch(err => {
-            res.status(400).send("Unable to Append Pool " + myDB.Data.id);
-        });
+            .then(() => {
+                res.json('Pool ' + myDB.poolId + " Appended!");
+            })
+            .catch(err => {
+                res.status(400).send("Unable to Append Pool " + myDB.poolId);
+            });
     }
 });
 
 // Defined second route
-myRoutes.route('/second').post(function(req, res){
+myRoutes.route('/second').post(function (req, res) {
     // Example empty pool
-    const myDB = {}
+    const myDB = { 'poolID': 123456, "poolValues": [1, 2, 3, 4, 5, 6] }
 
-    if (myDB.Data.poolID === req.body.poolID){
+    if (myDB.poolID === req.body.poolID) {
         const asc = (arr) => arr.sort((a, b) => a - b);
 
         const quantile = (arr, p) => {
-            
+
             const q = (p > 1) ? p / 100 : p //percentile to quantile
-            
+
             const sorted = asc(arr);
             const pos = (sorted.length - 1) * q;
             const base = Math.floor(pos);
@@ -51,8 +53,8 @@ myRoutes.route('/second').post(function(req, res){
         };
 
         const message = {
-            'quantile' : quantile(myDB.Data.poolValues, req.body.percentile),
-            'total_items': _.keys(myDB.Data.poolValues).length 
+            'quantile': quantile(myDB.poolValues, req.body.percentile),
+            'total_items': _.keys(myDB.poolValues).length
         }
         res.json(message)
     }
